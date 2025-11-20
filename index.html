@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bar Resume — Eli Klunder</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1018;
+      --panel: #121926;
+      --accent: #fca311;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 15% 20%, rgba(252, 163, 17, 0.06), transparent 25%),
+        radial-gradient(circle at 85% 0%, rgba(79, 70, 229, 0.15), transparent 30%), var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 32px;
+      min-height: 100vh;
+    }
+
+    .layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 18px;
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(4px);
+    }
+
+    .name {
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: default;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing: 0.01em;
+    }
+
+    .objective {
+      line-height: 1.6;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .field {
+      position: relative;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      outline: none;
+      font-size: 15px;
+    }
+
+    .field input::placeholder {
+      color: #7f8799;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .experience-item {
+      display: grid;
+      gap: 10px;
+      border-left: 3px solid rgba(252, 163, 17, 0.6);
+      padding-left: 14px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: transform 0.08s ease, background 0.2s ease;
+      user-select: none;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      background: rgba(252, 163, 17, 0.15);
+    }
+
+    .chip.active {
+      background: rgba(252, 163, 17, 0.25);
+      border-color: rgba(252, 163, 17, 0.6);
+      color: #ffedd5;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: rgba(252, 163, 17, 0.15);
+      color: #fcd34d;
+      font-weight: 600;
+      border: 1px solid rgba(252, 163, 17, 0.4);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .section {
+      display: grid;
+      gap: 14px;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      background: var(--accent);
+      color: #0c0a09;
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 30px rgba(252, 163, 17, 0.35);
+    }
+
+    button.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      box-shadow: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.15);
+    }
+
+    .empty {
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 20px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .contact {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header>
+      <div>
+        <div class="name">Eli Klunder</div>
+        <div class="contact">
+          <span class="pill">East Lansing, MI</span>
+          <span class="pill">(616) 450-3655</span>
+          <span class="pill">Information Science (B.S.) — Michigan State University</span>
+        </div>
+      </div>
+      <div class="status"><span></span>Ready for high-volume shifts</div>
+    </header>
+
+    <div class="card">
+      <h2>Objective</h2>
+      <p class="objective">
+        High-energy, customer-focused bartender with high-volume experience seeking to join Art &amp; Jakes. Skilled in fast,
+        accurate service during peak rushes and major sporting events, strong customer rapport, and maintaining a clean,
+        organized, and efficient bar.
+      </p>
+      <div class="cta-row">
+        <button onclick="contact('tel:+16164503655')">Call Eli</button>
+        <button class="secondary" onclick="contact('mailto:eliklunder@example.com?subject=Shift%20Opportunity')">Email</button>
+        <button class="secondary" id="rush-toggle">Peak Rush Mode</button>
+      </div>
+    </div>
+
+    <div class="card section">
+      <div class="toolbar">
+        <div class="field">
+          <label for="search">Focus finder</label>
+          <input id="search" type="text" placeholder="Type a skill, scenario, or keyword" />
+        </div>
+        <div class="field">
+          <label for="scenario">Scenario</label>
+          <select id="scenario">
+            <option value="all">All service scenarios</option>
+            <option value="rush">Peak rush / gameday</option>
+            <option value="opening">Opening &amp; closing</option>
+            <option value="teamwork">Team handoff</option>
+            <option value="clean">Cleanliness &amp; prep</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stack" id="experience"></div>
+    </div>
+
+    <div class="grid-two">
+      <div class="card">
+        <h2>Skills</h2>
+        <div class="chips" id="skills"></div>
+      </div>
+      <div class="card">
+        <h2>Certifications</h2>
+        <div class="columns">
+          <span class="pill">TIPS Certified</span>
+          <span class="pill">ServSafe Certified</span>
+        </div>
+        <h2 style="margin-top:18px;">Additional Strengths</h2>
+        <ul style="color: var(--muted); line-height: 1.5;">
+          <li>Regulars request personal service and trust my recommendations.</li>
+          <li>Frequently covers shifts; calm under pressure.</li>
+          <li>Helped improve bar layout, deep clean, and DJ booth installation.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const resume = {
+      experiences: [
+        {
+          role: "Bartender",
+          place: "Landshark Bar & Grill",
+          location: "East Lansing, MI",
+          dates: "Nov 2024 – Present",
+          tags: ["rush", "customer", "clean", "opening"],
+          bullets: [
+            "Bartend high-volume shifts during football games, bar crawls, and private events.",
+            "Deliver fast, accurate service with strong guest interaction and bar cleanliness.",
+            "Trusted to open/close independently; manage setup, breakdown, and cash handling.",
+            "Built customer loyalty with regulars requesting personal service.",
+            "Contributed to bar remodel: installed DJ lighting & booth, repainted, deep cleaned.",
+          ],
+        },
+        {
+          role: "Barback",
+          place: "Gin Gin’s",
+          location: "Grand Rapids, MI",
+          dates: "Summer 2024",
+          tags: ["teamwork", "clean", "prep"],
+          bullets: [
+            "Supported bartenders during high-volume nightlife shifts.",
+            "Restocked liquor, beer, ice, garnishes, and supplies.",
+            "Maintained sanitation, washed glassware, replaced kegs, cleaned equipment.",
+            "Assisted with opening/closing and ensured smooth shift transitions.",
+          ],
+        },
+      ],
+      skills: [
+        "High-volume bartending",
+        "Cocktail knowledge",
+        "Upselling",
+        "Customer service",
+        "Multi-tasking",
+        "POS systems",
+        "Cleaning & organization",
+        "Opening / closing",
+        "Inventory & prep",
+        "Fine-dining service",
+        "Teamwork",
+        "Adaptability",
+        "Problem-solving",
+      ],
+    };
+
+    const experienceEl = document.getElementById("experience");
+    const skillsEl = document.getElementById("skills");
+    const searchEl = document.getElementById("search");
+    const scenarioEl = document.getElementById("scenario");
+    const rushToggle = document.getElementById("rush-toggle");
+
+    let selectedSkill = null;
+    let rushMode = false;
+
+    function contact(url) {
+      window.location.href = url;
+    }
+
+    function renderSkills() {
+      skillsEl.innerHTML = "";
+      resume.skills.forEach((skill) => {
+        const chip = document.createElement("div");
+        chip.className = "chip" + (skill === selectedSkill ? " active" : "");
+        chip.textContent = skill;
+        chip.onclick = () => {
+          selectedSkill = selectedSkill === skill ? null : skill;
+          renderSkills();
+          renderExperience();
+        };
+        skillsEl.appendChild(chip);
+      });
+    }
+
+    function matchesFilters(exp) {
+      const query = searchEl.value.trim().toLowerCase();
+      const scenario = scenarioEl.value;
+      const text = [exp.role, exp.place, exp.location, exp.bullets.join(" ")].join(" ").toLowerCase();
+      const skillMatch = selectedSkill ? text.includes(selectedSkill.toLowerCase()) : true;
+      const searchMatch = query ? text.includes(query) : true;
+      const scenarioMatch = scenario === "all" || exp.tags.includes(scenario);
+      const rushMatch = rushMode ? exp.tags.includes("rush") : true;
+      return skillMatch && searchMatch && scenarioMatch && rushMatch;
+    }
+
+    function renderExperience() {
+      experienceEl.innerHTML = "";
+      const filtered = resume.experiences.filter(matchesFilters);
+      if (!filtered.length) {
+        experienceEl.innerHTML = `<div class="empty">No items match that focus. Try clearing the filter or choosing a different scenario.</div>`;
+        return;
+      }
+
+      filtered.forEach((exp) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "experience-item";
+        wrapper.innerHTML = `
+          <div class="meta">
+            <span class="badge">${exp.role}</span>
+            <span>${exp.place}</span>
+            <span>•</span>
+            <span>${exp.location}</span>
+            <span>•</span>
+            <span>${exp.dates}</span>
+          </div>
+          <ul>
+            ${exp.bullets.map((b) => `<li>${b}</li>`).join("")}
+          </ul>
+        `;
+        experienceEl.appendChild(wrapper);
+      });
+    }
+
+    rushToggle.addEventListener("click", () => {
+      rushMode = !rushMode;
+      rushToggle.classList.toggle("active", rushMode);
+      rushToggle.textContent = rushMode ? "Peak Rush Mode: On" : "Peak Rush Mode";
+      renderExperience();
+    });
+
+    [searchEl, scenarioEl].forEach((el) => el.addEventListener("input", renderExperience));
+
+    renderSkills();
+    renderExperience();
+  </script>
+</body>
+</html>
